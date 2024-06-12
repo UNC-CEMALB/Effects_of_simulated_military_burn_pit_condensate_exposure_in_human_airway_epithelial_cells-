@@ -6,220 +6,24 @@ Arun Ghosh
 BACKGROUND DIFFERENCES based on DEMOGRPAHIC COHORTS
 
 ``` r
-library(edgeR)
-```
-
-    ## Loading required package: limma
-
-``` r
-library(AnnotationDbi)
-```
-
-    ## Loading required package: stats4
-
-    ## Loading required package: BiocGenerics
-
-    ## 
-    ## Attaching package: 'BiocGenerics'
-
-    ## The following object is masked from 'package:limma':
-    ## 
-    ##     plotMA
-
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     IQR, mad, sd, var, xtabs
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     anyDuplicated, aperm, append, as.data.frame, basename, cbind,
-    ##     colnames, dirname, do.call, duplicated, eval, evalq, Filter, Find,
-    ##     get, grep, grepl, intersect, is.unsorted, lapply, Map, mapply,
-    ##     match, mget, order, paste, pmax, pmax.int, pmin, pmin.int,
-    ##     Position, rank, rbind, Reduce, rownames, sapply, setdiff, sort,
-    ##     table, tapply, union, unique, unsplit, which.max, which.min
-
-    ## Loading required package: Biobase
-
-    ## Welcome to Bioconductor
-    ## 
-    ##     Vignettes contain introductory material; view with
-    ##     'browseVignettes()'. To cite Bioconductor, see
-    ##     'citation("Biobase")', and for packages 'citation("pkgname")'.
-
-    ## Loading required package: IRanges
-
-    ## Loading required package: S4Vectors
-
-    ## 
-    ## Attaching package: 'S4Vectors'
-
-    ## The following object is masked from 'package:utils':
-    ## 
-    ##     findMatches
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     expand.grid, I, unname
-
-    ## 
-    ## Attaching package: 'IRanges'
-
-    ## The following object is masked from 'package:grDevices':
-    ## 
-    ##     windows
-
-``` r
-library(org.Hs.eg.db)
-```
-
-    ## 
-
-``` r
-library(dplyr)
-```
-
-    ## 
-    ## Attaching package: 'dplyr'
-
-    ## The following object is masked from 'package:AnnotationDbi':
-    ## 
-    ##     select
-
-    ## The following objects are masked from 'package:IRanges':
-    ## 
-    ##     collapse, desc, intersect, setdiff, slice, union
-
-    ## The following objects are masked from 'package:S4Vectors':
-    ## 
-    ##     first, intersect, rename, setdiff, setequal, union
-
-    ## The following object is masked from 'package:Biobase':
-    ## 
-    ##     combine
-
-    ## The following objects are masked from 'package:BiocGenerics':
-    ## 
-    ##     combine, intersect, setdiff, union
-
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     filter, lag
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     intersect, setdiff, setequal, union
-
-``` r
-library(stringr)
-library(ggplot2)
-library(EnhancedVolcano)
-```
-
-    ## Loading required package: ggrepel
-
-``` r
-library(eulerr)
-library(purrr)
-```
-
-    ## 
-    ## Attaching package: 'purrr'
-
-    ## The following object is masked from 'package:IRanges':
-    ## 
-    ##     reduce
-
-``` r
-library(ggVennDiagram)
-library(tidyverse)
-```
-
-    ## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-    ## ✔ forcats   1.0.0     ✔ tibble    3.2.1
-    ## ✔ lubridate 1.9.3     ✔ tidyr     1.3.0
-    ## ✔ readr     2.1.4
-
-    ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-    ## ✖ lubridate::%within%() masks IRanges::%within%()
-    ## ✖ dplyr::collapse()     masks IRanges::collapse()
-    ## ✖ dplyr::combine()      masks Biobase::combine(), BiocGenerics::combine()
-    ## ✖ dplyr::desc()         masks IRanges::desc()
-    ## ✖ tidyr::expand()       masks S4Vectors::expand()
-    ## ✖ dplyr::filter()       masks stats::filter()
-    ## ✖ dplyr::first()        masks S4Vectors::first()
-    ## ✖ dplyr::lag()          masks stats::lag()
-    ## ✖ ggplot2::Position()   masks BiocGenerics::Position(), base::Position()
-    ## ✖ purrr::reduce()       masks IRanges::reduce()
-    ## ✖ dplyr::rename()       masks S4Vectors::rename()
-    ## ✖ lubridate::second()   masks S4Vectors::second()
-    ## ✖ lubridate::second<-() masks S4Vectors::second<-()
-    ## ✖ dplyr::select()       masks AnnotationDbi::select()
-    ## ✖ dplyr::slice()        masks IRanges::slice()
-    ## ✖ tidyr::unite()        masks ggVennDiagram::unite()
-    ## ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
-
-``` r
-library(pheatmap)
-library(RColorBrewer) 
+suppressWarnings(suppressMessages(library(edgeR)))
+suppressWarnings(suppressMessages(library(AnnotationDbi)))
+suppressWarnings(suppressMessages(library(org.Hs.eg.db)))
+suppressWarnings(suppressMessages(library(dplyr)))
+suppressWarnings(suppressMessages(library(stringr)))
+suppressWarnings(suppressMessages(library(ggplot2)))
+suppressWarnings(suppressMessages(library(eulerr)))
+suppressWarnings(suppressMessages(library(purrr)))
+suppressWarnings(suppressMessages(library(ggVennDiagram)))
+suppressWarnings(suppressMessages(library(tidyverse)))
+suppressWarnings(suppressMessages(library(pheatmap)))
+suppressWarnings(suppressMessages(library(RColorBrewer))) 
 organism = "org.Hs.eg.db"
-library(organism, character.only = TRUE)
-library(clusterProfiler)
-```
-
-    ## 
-    ## clusterProfiler v4.10.0  For help: https://yulab-smu.top/biomedical-knowledge-mining-book/
-    ## 
-    ## If you use clusterProfiler in published research, please cite:
-    ## T Wu, E Hu, S Xu, M Chen, P Guo, Z Dai, T Feng, L Zhou, W Tang, L Zhan, X Fu, S Liu, X Bo, and G Yu. clusterProfiler 4.0: A universal enrichment tool for interpreting omics data. The Innovation. 2021, 2(3):100141
-    ## 
-    ## Attaching package: 'clusterProfiler'
-    ## 
-    ## The following object is masked from 'package:purrr':
-    ## 
-    ##     simplify
-    ## 
-    ## The following object is masked from 'package:AnnotationDbi':
-    ## 
-    ##     select
-    ## 
-    ## The following object is masked from 'package:IRanges':
-    ## 
-    ##     slice
-    ## 
-    ## The following object is masked from 'package:S4Vectors':
-    ## 
-    ##     rename
-    ## 
-    ## The following object is masked from 'package:stats':
-    ## 
-    ##     filter
-
-``` r
-library(readxl)
-library(psych)
-```
-
-    ## 
-    ## Attaching package: 'psych'
-    ## 
-    ## The following objects are masked from 'package:ggplot2':
-    ## 
-    ##     %+%, alpha
-    ## 
-    ## The following objects are masked from 'package:IRanges':
-    ## 
-    ##     distance, reflect
-
-``` r
-library(corrplot)
-```
-
-    ## corrplot 0.92 loaded
-
-``` r
-library(enrichplot)
-library(openxlsx)
+suppressWarnings(suppressMessages(library(organism, character.only = TRUE)))
+suppressWarnings(suppressMessages(library(clusterProfiler)))
+suppressWarnings(suppressMessages(library(readxl)))
+suppressWarnings(suppressMessages(library(enrichplot)))
+suppressWarnings(suppressMessages(library(openxlsx)))
 
 counts <- read.delim("counts_7G.txt", row.names = 1) # reading in RNAseq data
 
@@ -313,7 +117,7 @@ mm9 <- model.matrix(~0+group2) # non-smoker and smoker donors
 y9 <- voom(d, mm9, plot = T)
 ```
 
-![](README_figs/README-unnamed-chunk-2-1.png)<!-- -->
+![](README_figs/README-unnamed-chunk-8-1.png)<!-- -->
 
 FIGURE E5
 
@@ -433,8 +237,12 @@ counts_CTRL <- counts %>% select(ends_with("CTRL")  ) # selecting control sample
   colnames(counts_CTRL_NvS) <- gsub('-', '', colnames(counts_CTRL_NvS))
   
   names(counts_CTRL_NvS) <- str_replace_all(names(counts_CTRL_NvS), 
-                                            c(NCTRL= "Non-smoker",
+                                            c(NCTRL= "Nonsmoker",
                                               SCTRL= "Smoker"))
+x <- as.data.frame(colnames(counts_CTRL_NvS))
+
+colnames(x) <- "Groups"
+x2 = list( Groups = c(Nonsmoker="yellow", Smoker="purple"))
   temp3 <- as.matrix(counts_CTRL_NvS)
   pheatmap(temp3, 
            color = colorRampPalette(rev(brewer.pal(n = 7, name ="RdYlBu")))(100), 
@@ -444,12 +252,15 @@ counts_CTRL <- counts %>% select(ends_with("CTRL")  ) # selecting control sample
            angle_col = c("45"), 
            cellwidth = 10, 
            cellheight = 10, 
-           border_color = "black", 
+           border_color = "black",
+           annotation_col = x,
+           annotation_colors = x2,
+           show_colnames = F,
            treeheight_col = 1, 
            fontsize_row = 7, 
            scale = 'row', 
            fontsize_col = 7, 
-           cutree_rows = 2, 
+           cutree_rows = 2,
            cluster_cols = FALSE, 
            cluster_rows = TRUE)
 ```
@@ -580,7 +391,10 @@ c10 <- list() # for getting the list of all genes
   
   names(counts_CTRL_FvM) <- str_replace_all(names(counts_CTRL_FvM), c(FCTRL= "Female",
                                                                       MCTRL= "Male"))
-  temp4 <- as.matrix(counts_CTRL_FvM)
+x <- as.data.frame(colnames(counts_CTRL_FvM))
+colnames(x) <- "Groups"
+x2 = list( Groups = c(Female="yellow", Male="purple"))
+temp4 <- as.matrix(counts_CTRL_FvM)
   pheatmap(temp4, 
            color = colorRampPalette(rev(brewer.pal(n = 7, name ="RdYlBu")))(100), 
            display_numbers = FALSE,
@@ -589,7 +403,10 @@ c10 <- list() # for getting the list of all genes
            angle_col = c("45"), 
            cellwidth = 10, 
            cellheight = 7, 
-           border_color = "black", 
+           border_color = "black",
+           annotation_col = x,
+           annotation_colors = x2,
+           show_colnames = F, 
            treeheight_col = 1, 
            fontsize_row = 7, 
            scale = 'row', 
@@ -599,7 +416,7 @@ c10 <- list() # for getting the list of all genes
            cluster_rows = TRUE)
 ```
 
-![](README_figs/README--heatmap%20of%20background%20differences%20between%20female%20and%20male%20donors-1.png)<!-- -->
+![](README_figs/README-unnamed-chunk-9-1.png)<!-- -->
 
 ``` r
 GdataFvM <- c10 
@@ -710,7 +527,7 @@ barplot(enGOFvM, showCategory=10, font = 15, title = "Female vs Male")+
         title = element_text(size = 15, face="bold"))
 ```
 
-![](README_figs/README-unnamed-chunk-3-1.png)<!-- -->
+![](README_figs/README-unnamed-chunk-11-1.png)<!-- -->
 
 ``` r
 #------------------------------------------------------------------#
@@ -763,13 +580,38 @@ barplot(enGOMvF, showCategory=10, font = 15, title = "Male vs Female")+
         title = element_text(size = 15, face="bold"))
 ```
 
-![](README_figs/README-unnamed-chunk-3-2.png)<!-- -->
+![](README_figs/README-unnamed-chunk-12-1.png)<!-- -->
 
 ``` r
 #-----------------------------------------------------------------#  
   
-write.table(b9, "background_NvS.csv", sep = ",", row.names = F)
-write.table(b10, "background_FvM.csv", sep = ",", row.names = F)
+# write.table(b9, "background_NvS.csv", sep = ",", row.names = F)
+# write.table(b10, "background_FvM.csv", sep = ",", row.names = F)
+BG <- list()
 
+BG$background_NvS <- b9
+BG$background_FvM <- b10
+#---------------------------------------------------#
+
+blank_excel <- createWorkbook()
+
+Map(function(df, tab_name){     
+  
+  addWorksheet(blank_excel, tab_name)
+  writeData(blank_excel, tab_name, df)
+}, 
+
+BG, names(BG)
+)
+```
+
+    ## $background_NvS
+    ## [1] 0
+    ## 
+    ## $background_FvM
+    ## [1] 0
+
+``` r
+saveWorkbook(blank_excel, file = "Table E2.xlsx", overwrite = TRUE)
 #-----------------------------------------------------------------# 
 ```

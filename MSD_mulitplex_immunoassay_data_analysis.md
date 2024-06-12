@@ -4,121 +4,15 @@ Arun Ghosh
 2024-05-22
 
 ``` r
-library(readxl)
-library(dplyr)
-```
+suppressWarnings(suppressMessages(library(readxl)))
+suppressWarnings(suppressMessages(library(dplyr)))
+suppressWarnings(suppressMessages(library(vsn)))
+suppressWarnings(suppressMessages(library(imputeLCMD)))
+suppressWarnings(suppressMessages(library(tidyverse)))
+suppressWarnings(suppressMessages(library(rstatix)))
+suppressWarnings(suppressMessages(library(openxlsx)))
 
-    ## 
-    ## Attaching package: 'dplyr'
 
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     filter, lag
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     intersect, setdiff, setequal, union
-
-``` r
-library(vsn)
-```
-
-    ## Loading required package: Biobase
-
-    ## Loading required package: BiocGenerics
-
-    ## 
-    ## Attaching package: 'BiocGenerics'
-
-    ## The following objects are masked from 'package:dplyr':
-    ## 
-    ##     combine, intersect, setdiff, union
-
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     IQR, mad, sd, var, xtabs
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     anyDuplicated, aperm, append, as.data.frame, basename, cbind,
-    ##     colnames, dirname, do.call, duplicated, eval, evalq, Filter, Find,
-    ##     get, grep, grepl, intersect, is.unsorted, lapply, Map, mapply,
-    ##     match, mget, order, paste, pmax, pmax.int, pmin, pmin.int,
-    ##     Position, rank, rbind, Reduce, rownames, sapply, setdiff, sort,
-    ##     table, tapply, union, unique, unsplit, which.max, which.min
-
-    ## Welcome to Bioconductor
-    ## 
-    ##     Vignettes contain introductory material; view with
-    ##     'browseVignettes()'. To cite Bioconductor, see
-    ##     'citation("Biobase")', and for packages 'citation("pkgname")'.
-
-``` r
-library(imputeLCMD)
-```
-
-    ## Loading required package: tmvtnorm
-
-    ## Loading required package: mvtnorm
-
-    ## Loading required package: Matrix
-
-    ## Loading required package: stats4
-
-    ## Loading required package: gmm
-
-    ## Loading required package: sandwich
-
-    ## Loading required package: norm
-
-    ## This package has some major limitations
-    ## (for example, it does not work reliably when
-    ## the number of variables exceeds 30),
-    ## and has been superseded by the norm2 package.
-
-    ## Loading required package: pcaMethods
-
-    ## 
-    ## Attaching package: 'pcaMethods'
-
-    ## The following object is masked from 'package:stats':
-    ## 
-    ##     loadings
-
-    ## Loading required package: impute
-
-``` r
-library(tidyverse)
-```
-
-    ## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-    ## ✔ forcats   1.0.0     ✔ readr     2.1.4
-    ## ✔ ggplot2   3.5.0     ✔ stringr   1.5.1
-    ## ✔ lubridate 1.9.3     ✔ tibble    3.2.1
-    ## ✔ purrr     1.0.2     ✔ tidyr     1.3.0
-
-    ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-    ## ✖ Biobase::combine()  masks BiocGenerics::combine(), dplyr::combine()
-    ## ✖ tidyr::expand()     masks Matrix::expand()
-    ## ✖ dplyr::filter()     masks stats::filter()
-    ## ✖ dplyr::lag()        masks stats::lag()
-    ## ✖ tidyr::pack()       masks Matrix::pack()
-    ## ✖ ggplot2::Position() masks BiocGenerics::Position(), base::Position()
-    ## ✖ tidyr::unpack()     masks Matrix::unpack()
-    ## ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
-
-``` r
-library(rstatix)
-```
-
-    ## 
-    ## Attaching package: 'rstatix'
-    ## 
-    ## The following object is masked from 'package:stats':
-    ## 
-    ##     filter
-
-``` r
 cytokine_df = data.frame(read.csv("MSD_cytokines_data.csv"))
 rownames(cytokine_df) <- cytokine_df[ ,1 ]
 cytokine_df <- cytokine_df[,-1 ]
@@ -312,10 +206,10 @@ head(dunn_df)
     ## 56       IL.7              Control 1.24877394743327         12
     ##                 Group2        Group2-Mean Group2 (n)             logFC
     ## 308    Plywood Flaming   1.89060721884534         12 0.769853630308083
-    ## 262    Plywood Flaming 0.0261404125220032         12 0.606645689646378
+    ## 262    Plywood Flaming 0.0240968877085607         12 0.603205766520793
     ## 311    Plywood Flaming   1.89060721884534         12 0.519796930510837
     ## 296            Control    3.8865611663222         12 -0.42787309164076
-    ## 42  Plywood Smoldering -0.545098742728766         12 0.833956183659206
+    ## 42  Plywood Smoldering -0.545080374922614         12 0.837592038763722
     ## 56     Plywood Flaming  0.140426054780445         12  1.24625760357641
     ##             Statistic               pValue         adj-p Value
     ## 308 -5.40590506056197 6.44819472815336e-08 1.3541208929122e-06
@@ -334,13 +228,32 @@ head(dunn_df)
 
 ``` r
 ###############################################################################
-# wb = xlsx::createWorkbook()
-# 
-# sheet = createSheet(wb, "Friedman's test")
-# addDataFrame(friedman_df, sheet=sheet, startColumn=1, startRow=1, row.names=FALSE)
-# 
-# sheet = createSheet(wb, "Dunn's test")
-# addDataFrame(dunn_df, sheet=sheet, startColumn=1, startRow=1, row.names=FALSE)
-# 
-# saveWorkbook(wb, "Table E7 MSD_stat_17.xlsx")
+#wb = xlsx::createWorkbook()
+
+MSD <- list()
+
+MSD$Friedman_test <- friedman_df 
+MSD$Dunn_test <-  dunn_df
+  
+
+blank_excel <- createWorkbook()
+
+Map(function(df, tab_name){     
+  
+  addWorksheet(blank_excel, tab_name)
+  writeData(blank_excel, tab_name, df)
+}, 
+
+MSD, names(MSD)
+)
+```
+
+    ## $Friedman_test
+    ## [1] 0
+    ## 
+    ## $Dunn_test
+    ## [1] 0
+
+``` r
+saveWorkbook(blank_excel, file = "Table E8.xlsx", overwrite = TRUE)
 ```

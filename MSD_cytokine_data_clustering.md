@@ -7,64 +7,14 @@ Arun Ghosh
 # knitr::opts_chunk$set(echo = TRUE)
 
 
-library(readxl)
-library(WGCNA)
-```
+suppressWarnings(suppressMessages(library(readxl)))
+suppressWarnings(suppressMessages(library(WGCNA)))
+suppressWarnings(suppressMessages(library(plotrix)))
+suppressWarnings(suppressMessages(library(RColorBrewer)))
+suppressWarnings(suppressMessages(library(pheatmap)))
+suppressWarnings(suppressMessages(library(dplyr)))
+suppressWarnings(suppressMessages(library(tidyverse)))
 
-    ## Loading required package: dynamicTreeCut
-
-    ## Loading required package: fastcluster
-
-    ## 
-    ## Attaching package: 'fastcluster'
-
-    ## The following object is masked from 'package:stats':
-    ## 
-    ##     hclust
-
-    ## 
-
-    ## 
-    ## Attaching package: 'WGCNA'
-
-    ## The following object is masked from 'package:stats':
-    ## 
-    ##     cor
-
-``` r
-library(plotrix)
-library(RColorBrewer)
-library(pheatmap)
-library(dplyr)
-```
-
-    ## 
-    ## Attaching package: 'dplyr'
-
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     filter, lag
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     intersect, setdiff, setequal, union
-
-``` r
-library(tidyverse)
-```
-
-    ## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-    ## ✔ forcats   1.0.0     ✔ readr     2.1.4
-    ## ✔ ggplot2   3.5.0     ✔ stringr   1.5.1
-    ## ✔ lubridate 1.9.3     ✔ tibble    3.2.1
-    ## ✔ purrr     1.0.2     ✔ tidyr     1.3.0
-
-    ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-    ## ✖ dplyr::filter() masks stats::filter()
-    ## ✖ dplyr::lag()    masks stats::lag()
-    ## ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
-
-``` r
 # The following setting is important, do not omit.
 options(stringsAsFactors = FALSE)
 
@@ -171,31 +121,65 @@ plotDendroAndColors(sampleTree2_2, traitColors_2,
 # lnames = load(file = "01-dataInput.RData");
 # ##The variable lnames contains the names of loaded variables.
 # lnames
-# # Allow multi-threading within WGCNA. 
-# allowWGCNAThreads()
-# 
-# # Choose a set of soft-thresholding powers
-# powers = c(c(1:10), seq(from = 12, to=20, by=2))
-# # Call the network topology analysis function
-# sft = pickSoftThreshold(datExpr_2, powerVector = powers, verbose = 5)
-# # Plot the results:
-# sizeGrWindow(9, 5)
-# par(mfrow = c(1,2));
-# cex1 = 0.9;
-# # Scale-free topology fit index as a function of the soft-thresholding power
-# plot(sft$fitIndices[,1], -sign(sft$fitIndices[,3])*sft$fitIndices[,2],
-#      xlab="Soft Threshold (power)",ylab="Scale Free Topology Model Fit,signed R^2",type="n",
-#      main = paste("Scale independence"))
-# text(sft$fitIndices[,1], -sign(sft$fitIndices[,3])*sft$fitIndices[,2],
-#      labels=powers,cex=cex1,col="red");
-# # this line corresponds to using an R^2 cut-off of h
-# abline(h=0.2,col="red")
-# # Mean connectivity as a function of the soft-thresholding power
-# plot(sft$fitIndices[,1], sft$fitIndices[,5],
-#      xlab="Soft Threshold (power)",ylab="Mean Connectivity", type="n",
-#      main = paste("Mean connectivity"))
-# text(sft$fitIndices[,1], sft$fitIndices[,5], labels=powers, cex=cex1,col="red")
+# Allow multi-threading within WGCNA.
+allowWGCNAThreads()
 ```
+
+    ## Allowing multi-threading with up to 4 threads.
+
+``` r
+# Choose a set of soft-thresholding powers
+powers = c(c(1:10), seq(from = 12, to=20, by=2))
+# Call the network topology analysis function
+sft = pickSoftThreshold(datExpr_2, powerVector = powers, verbose = 5)
+```
+
+    ## pickSoftThreshold: will use block size 17.
+    ##  pickSoftThreshold: calculating connectivity for given powers...
+    ##    ..working on genes 1 through 17 of 17
+    ##    Power SFT.R.sq  slope truncated.R.sq mean.k. median.k.  max.k.
+    ## 1      1 0.097500  9.450         0.0302 5.54000   6.03000 7.55000
+    ## 2      2 0.008560  1.120        -0.1410 2.72000   2.86000 4.39000
+    ## 3      3 0.014900 -1.220        -0.1890 1.53000   1.54000 2.71000
+    ## 4      4 0.018000 -1.140        -0.2000 0.92100   0.89400 1.73000
+    ## 5      5 0.047000 -2.560        -0.1250 0.58200   0.54800 1.12000
+    ## 6      6 0.005970 -0.727        -0.1110 0.37900   0.35300 0.73500
+    ## 7      7 0.020800 -0.897        -0.2280 0.25200   0.23600 0.48800
+    ## 8      8 0.074800 -1.530        -0.0873 0.17100   0.16000 0.33700
+    ## 9      9 0.000900 -0.151        -0.1560 0.11700   0.11000 0.24600
+    ## 10    10 0.067800 -1.540        -0.1820 0.08140   0.07580 0.18200
+    ## 11    12 0.000502 -0.181        -0.2830 0.04010   0.03670 0.09990
+    ## 12    14 0.031700 -1.470        -0.2380 0.02020   0.01800 0.05560
+    ## 13    16 0.046000 -1.610        -0.2130 0.01030   0.00894 0.03110
+    ## 14    18 0.201000 -3.080         0.1230 0.00535   0.00445 0.01750
+    ## 15    20 0.235000 -3.330         0.1210 0.00280   0.00223 0.00984
+
+``` r
+# Plot the results:
+sizeGrWindow(9, 5)
+par(mfrow = c(1,2));
+cex1 = 0.9;
+# Scale-free topology fit index as a function of the soft-thresholding power
+plot(sft$fitIndices[,1], -sign(sft$fitIndices[,3])*sft$fitIndices[,2],
+     xlab="Soft Threshold (power)",ylab="Scale Free Topology Model Fit,signed R^2",type="n",
+     main = paste("Scale independence"))+
+text(sft$fitIndices[,1], -sign(sft$fitIndices[,3])*sft$fitIndices[,2],
+     labels=powers,cex=cex1,col="red")+
+# this line corresponds to using an R^2 cut-off of h
+abline(h=0.2,col="red")
+```
+
+    ## integer(0)
+
+``` r
+# Mean connectivity as a function of the soft-thresholding power
+plot(sft$fitIndices[,1], sft$fitIndices[,5],
+     xlab="Soft Threshold (power)",ylab="Mean Connectivity", type="n",
+     main = paste("Mean connectivity"))+
+text(sft$fitIndices[,1], sft$fitIndices[,5], labels=powers, cex=cex1,col="red")
+```
+
+    ## integer(0)
 
 ``` r
 # tried different combinations
@@ -298,12 +282,8 @@ moduleTraitCor = cor(MEs, datTraits_2, use = "p");
 moduleTraitPvalue = corPvalueStudent(moduleTraitCor, nSamples);
 
 
-display.brewer.pal(11, "RdBu")
-```
+#display.brewer.pal(11, "RdBu")
 
-![](README_figs/README-unnamed-chunk-2-1.png)<!-- -->
-
-``` r
 coul <- rev(colorRampPalette(brewer.pal(9, "RdBu"))(50))
 
 sizeGrWindow(10,6)
@@ -445,13 +425,14 @@ pheatmap(imputedHM,
          scale = 'row',
          fontsize_col = 10,
          cluster_cols = FALSE,
-         cluster_rows = FALSE)+
-  theme(text=element_text(family="Arial", face="bold", size=12)) 
+         cluster_rows = FALSE)#+
 ```
 
-![](README_figs/README--reading%20in%20imputed%20data%20and%20heatmap-1.png)<!-- -->
+![](README_figs/README--reading%20in%20imputed%20data%20and%20generating%20heatmap-1.png)<!-- -->
 
-    ## NULL
+``` r
+  #theme(text=element_text(family="Arial", face="bold", size=12)) 
+```
 
 ``` r
 for(i in 1:length(unique_Cytokine)){

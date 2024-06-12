@@ -6,216 +6,28 @@ Arun Ghosh
 DEMOGRAPHIC COHORTS-DEPENDENT ANALYSIS
 
 ``` r
-library(limma)
-library(edgeR)
-library(AnnotationDbi)
-```
-
-    ## Loading required package: stats4
-
-    ## Loading required package: BiocGenerics
-
-    ## 
-    ## Attaching package: 'BiocGenerics'
-
-    ## The following object is masked from 'package:limma':
-    ## 
-    ##     plotMA
-
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     IQR, mad, sd, var, xtabs
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     anyDuplicated, aperm, append, as.data.frame, basename, cbind,
-    ##     colnames, dirname, do.call, duplicated, eval, evalq, Filter, Find,
-    ##     get, grep, grepl, intersect, is.unsorted, lapply, Map, mapply,
-    ##     match, mget, order, paste, pmax, pmax.int, pmin, pmin.int,
-    ##     Position, rank, rbind, Reduce, rownames, sapply, setdiff, sort,
-    ##     table, tapply, union, unique, unsplit, which.max, which.min
-
-    ## Loading required package: Biobase
-
-    ## Welcome to Bioconductor
-    ## 
-    ##     Vignettes contain introductory material; view with
-    ##     'browseVignettes()'. To cite Bioconductor, see
-    ##     'citation("Biobase")', and for packages 'citation("pkgname")'.
-
-    ## Loading required package: IRanges
-
-    ## Loading required package: S4Vectors
-
-    ## 
-    ## Attaching package: 'S4Vectors'
-
-    ## The following object is masked from 'package:utils':
-    ## 
-    ##     findMatches
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     expand.grid, I, unname
-
-    ## 
-    ## Attaching package: 'IRanges'
-
-    ## The following object is masked from 'package:grDevices':
-    ## 
-    ##     windows
-
-``` r
-library(org.Hs.eg.db)
-```
-
-    ## 
-
-``` r
-library(dplyr)
-```
-
-    ## 
-    ## Attaching package: 'dplyr'
-
-    ## The following object is masked from 'package:AnnotationDbi':
-    ## 
-    ##     select
-
-    ## The following objects are masked from 'package:IRanges':
-    ## 
-    ##     collapse, desc, intersect, setdiff, slice, union
-
-    ## The following objects are masked from 'package:S4Vectors':
-    ## 
-    ##     first, intersect, rename, setdiff, setequal, union
-
-    ## The following object is masked from 'package:Biobase':
-    ## 
-    ##     combine
-
-    ## The following objects are masked from 'package:BiocGenerics':
-    ## 
-    ##     combine, intersect, setdiff, union
-
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     filter, lag
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     intersect, setdiff, setequal, union
-
-``` r
-library(stringr)
-library(ggplot2)
-library(EnhancedVolcano)
-```
-
-    ## Loading required package: ggrepel
-
-``` r
-library(eulerr)
-library(purrr)
-```
-
-    ## 
-    ## Attaching package: 'purrr'
-
-    ## The following object is masked from 'package:IRanges':
-    ## 
-    ##     reduce
-
-``` r
-library(ggVennDiagram)
-library(tidyverse)
-```
-
-    ## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-    ## ✔ forcats   1.0.0     ✔ tibble    3.2.1
-    ## ✔ lubridate 1.9.3     ✔ tidyr     1.3.0
-    ## ✔ readr     2.1.4
-
-    ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-    ## ✖ lubridate::%within%() masks IRanges::%within%()
-    ## ✖ dplyr::collapse()     masks IRanges::collapse()
-    ## ✖ dplyr::combine()      masks Biobase::combine(), BiocGenerics::combine()
-    ## ✖ dplyr::desc()         masks IRanges::desc()
-    ## ✖ tidyr::expand()       masks S4Vectors::expand()
-    ## ✖ dplyr::filter()       masks stats::filter()
-    ## ✖ dplyr::first()        masks S4Vectors::first()
-    ## ✖ dplyr::lag()          masks stats::lag()
-    ## ✖ ggplot2::Position()   masks BiocGenerics::Position(), base::Position()
-    ## ✖ purrr::reduce()       masks IRanges::reduce()
-    ## ✖ dplyr::rename()       masks S4Vectors::rename()
-    ## ✖ lubridate::second()   masks S4Vectors::second()
-    ## ✖ lubridate::second<-() masks S4Vectors::second<-()
-    ## ✖ dplyr::select()       masks AnnotationDbi::select()
-    ## ✖ dplyr::slice()        masks IRanges::slice()
-    ## ✖ tidyr::unite()        masks ggVennDiagram::unite()
-    ## ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
-
-``` r
-library(pheatmap)
-library(RColorBrewer) 
+suppressWarnings(suppressMessages(library(limma)))
+suppressWarnings(suppressMessages(library(edgeR)))
+suppressWarnings(suppressMessages(library(AnnotationDbi)))
+suppressWarnings(suppressMessages(library(org.Hs.eg.db)))
+suppressWarnings(suppressMessages(library(dplyr)))
+suppressWarnings(suppressMessages(library(stringr)))
+suppressWarnings(suppressMessages(library(ggplot2)))
+suppressWarnings(suppressMessages(library(EnhancedVolcano)))
+suppressWarnings(suppressMessages(library(eulerr)))
+suppressWarnings(suppressMessages(library(purrr)))
+suppressWarnings(suppressMessages(library(ggVennDiagram)))
+suppressWarnings(suppressMessages(library(tidyverse)))
+suppressWarnings(suppressMessages(library(pheatmap)))
+suppressWarnings(suppressMessages(library(RColorBrewer))) 
 organism = "org.Hs.eg.db"
-library(organism, character.only = TRUE)
-library(clusterProfiler)
-```
-
-    ## 
-    ## clusterProfiler v4.10.0  For help: https://yulab-smu.top/biomedical-knowledge-mining-book/
-    ## 
-    ## If you use clusterProfiler in published research, please cite:
-    ## T Wu, E Hu, S Xu, M Chen, P Guo, Z Dai, T Feng, L Zhou, W Tang, L Zhan, X Fu, S Liu, X Bo, and G Yu. clusterProfiler 4.0: A universal enrichment tool for interpreting omics data. The Innovation. 2021, 2(3):100141
-    ## 
-    ## Attaching package: 'clusterProfiler'
-    ## 
-    ## The following object is masked from 'package:purrr':
-    ## 
-    ##     simplify
-    ## 
-    ## The following object is masked from 'package:AnnotationDbi':
-    ## 
-    ##     select
-    ## 
-    ## The following object is masked from 'package:IRanges':
-    ## 
-    ##     slice
-    ## 
-    ## The following object is masked from 'package:S4Vectors':
-    ## 
-    ##     rename
-    ## 
-    ## The following object is masked from 'package:stats':
-    ## 
-    ##     filter
-
-``` r
-library(readxl)
-library(psych)
-```
-
-    ## 
-    ## Attaching package: 'psych'
-    ## 
-    ## The following objects are masked from 'package:ggplot2':
-    ## 
-    ##     %+%, alpha
-    ## 
-    ## The following objects are masked from 'package:IRanges':
-    ## 
-    ##     distance, reflect
-
-``` r
-library(corrplot)
-```
-
-    ## corrplot 0.92 loaded
-
-``` r
-library(enrichplot)
-library(openxlsx)
+suppressWarnings(suppressMessages(library(organism, character.only = TRUE)))
+suppressWarnings(suppressMessages(library(clusterProfiler)))
+suppressWarnings(suppressMessages(library(readxl)))
+suppressWarnings(suppressMessages(library(psych)))
+suppressWarnings(suppressMessages(library(corrplot)))
+suppressWarnings(suppressMessages(library(enrichplot)))
+suppressWarnings(suppressMessages(library(openxlsx)))
 
 
 counts <- read.delim("counts_7G.txt", row.names = 1) # reading in RNAseq data
@@ -275,7 +87,7 @@ mm5 <- model.matrix(~0+exposure+batch)
 y5 <- voom(d, mm5, plot = T)
 ```
 
-![](README_figs/README-unnamed-chunk-3-1.png)<!-- -->
+![](README_figs/README-unnamed-chunk-5-1.png)<!-- -->
 
 ``` r
 colnames(mm5)
@@ -401,7 +213,9 @@ a5[3] <- NULL
 b5[3] <- NULL 
 c5[3] <- NULL
 d5[3] <- NULL
+```
 
+``` r
 names(a5) <- str_replace_all(names(a5), c(CBF= "Non-smokers\nCardboard\nFlaming",
                                           CBS= "Non-smokers\nCardboard\nSmoldering",
                                           PLF= "Non-smokers\nPlastic\nFlaming",
@@ -448,7 +262,7 @@ b5, names(b5)
     ## [1] 0
 
 ``` r
-saveWorkbook(blank_excel, file = "Table E2 DEG_NS.xlsx", overwrite = TRUE)
+saveWorkbook(blank_excel, file = "Table E3.xlsx", overwrite = TRUE)
 ```
 
 ``` r
@@ -495,7 +309,7 @@ mm6 <- model.matrix(~0+exposure+batch)
 y6 <- voom(d, mm6, plot = T)
 ```
 
-![](README_figs/README-unnamed-chunk-4-1.png)<!-- -->
+![](README_figs/README-unnamed-chunk-12-1.png)<!-- -->
 
 ``` r
 colnames(mm6)
@@ -662,7 +476,7 @@ b6, names(b6)
     ## [1] 0
 
 ``` r
-saveWorkbook(blank_excel, file = "Table E3 DEG_Sm.xlsx", overwrite = TRUE)
+saveWorkbook(blank_excel, file = "Table E4.xlsx", overwrite = TRUE)
 ```
 
 ``` r
@@ -709,7 +523,7 @@ mm7 <- model.matrix(~0+exposure+batch)
 y7 <- voom(d, mm7, plot = T)
 ```
 
-![](README_figs/README-unnamed-chunk-5-1.png)<!-- -->
+![](README_figs/README-unnamed-chunk-17-1.png)<!-- -->
 
 ``` r
 colnames(mm7)
@@ -827,7 +641,9 @@ a7[3] <- NULL
 b7[3] <- NULL 
 c7[3] <- NULL
 d7[3] <- NULL
+```
 
+``` r
 names(a7) <- str_replace_all(names(a7), c(CBF= "Female\nCardboard\nFlaming",
                                           CBS= "Female\nCardboard\nSmoldering",
                                           PLF= "Female\nPlastic\nFlaming",
@@ -874,7 +690,7 @@ b7, names(b7)
     ## [1] 0
 
 ``` r
-saveWorkbook(blank_excel, file = "Table E4 DEG_F.xlsx", overwrite = TRUE)
+saveWorkbook(blank_excel, file = "Table E5.xlsx", overwrite = TRUE)
 ```
 
 ``` r
@@ -921,7 +737,7 @@ mm8 <- model.matrix(~0+exposure+batch)
 y8 <- voom(d, mm8, plot = T)
 ```
 
-![](README_figs/README-unnamed-chunk-6-1.png)<!-- -->
+![](README_figs/README-unnamed-chunk-23-1.png)<!-- -->
 
 ``` r
 colnames(mm8)
@@ -1033,7 +849,9 @@ a8[3] <- NULL
 b8[3] <- NULL 
 c8[3] <- NULL
 d8[3] <- NULL
+```
 
+``` r
 names(a8) <- str_replace_all(names(a8), c(CBF= "Male\nCardboard\nFlaming",
                                           CBS= "Male\nCardboard\nSmoldering",
                                           PLF= "Male\nPlastic\nFlaming",
@@ -1080,7 +898,7 @@ b8, names(b8)
     ## [1] 0
 
 ``` r
-saveWorkbook(blank_excel, file = "Table E5 DEG_M.xlsx", overwrite = TRUE)
+saveWorkbook(blank_excel, file = "Table E6.xlsx", overwrite = TRUE)
 ```
 
 Figure 6
@@ -1117,7 +935,7 @@ plot(EP_All_PW,
      fills = c("white","cyan" ))
 ```
 
-![](README_figs/README--Euler%20plots%20of%20flaming%20condition-2.png)<!-- -->
+![](README_figs/README-unnamed-chunk-27-1.png)<!-- -->
 
 ``` r
 NvS_PLf <- NvS[c(3,9)]
@@ -1132,7 +950,7 @@ plot(EP_All_PL,
      fills = c("white","cyan" ))
 ```
 
-![](README_figs/README--Euler%20plots%20of%20flaming%20condition-3.png)<!-- -->
+![](README_figs/README-unnamed-chunk-28-1.png)<!-- -->
 
 ``` r
 #---------------------------------------------------------------#
@@ -1151,7 +969,7 @@ plot(EP_All_CB,
      fills = c("cyan","white"))
 ```
 
-![](README_figs/README--Euler%20plots%20of%20flaming%20condition-4.png)<!-- -->
+![](README_figs/README-unnamed-chunk-29-1.png)<!-- -->
 
 ``` r
 FvM_PWf <- FvM[c(5,11)]
@@ -1166,7 +984,7 @@ plot(EP_All_PW,
      fills = c("cyan","white"))
 ```
 
-![](README_figs/README--Euler%20plots%20of%20flaming%20condition-5.png)<!-- -->
+![](README_figs/README-unnamed-chunk-30-1.png)<!-- -->
 
 ``` r
 FvM_PLf <- FvM[c(3,9)]
@@ -1181,7 +999,7 @@ plot(EP_All_PL,
      fills = c("cyan","white"))
 ```
 
-![](README_figs/README--Euler%20plots%20of%20flaming%20condition-6.png)<!-- -->
+![](README_figs/README-unnamed-chunk-31-1.png)<!-- -->
 
 Figure E7
 
@@ -1215,7 +1033,7 @@ plot(EP_All_PWs,
      fills = c("cyan","white" ))
 ```
 
-![](README_figs/README--Euler%20plots%20of%20smoldering%20condition-2.png)<!-- -->
+![](README_figs/README-unnamed-chunk-32-1.png)<!-- -->
 
 ``` r
 NvS_PLs <- NvS[c(4,10)]
@@ -1230,7 +1048,7 @@ plot(EP_All_PLs,
      fills = c("cyan","white"))
 ```
 
-![](README_figs/README--Euler%20plots%20of%20smoldering%20condition-3.png)<!-- -->
+![](README_figs/README-unnamed-chunk-33-1.png)<!-- -->
 
 ``` r
 FvM_CBs <- FvM[c(2,8)]
@@ -1245,7 +1063,7 @@ plot(EP_All_CBs,
      fills = c("white","cyan" ))
 ```
 
-![](README_figs/README--Euler%20plots%20of%20smoldering%20condition-4.png)<!-- -->
+![](README_figs/README-unnamed-chunk-34-1.png)<!-- -->
 
 ``` r
 FvM_PWs <- FvM[c(6,12)]
@@ -1260,7 +1078,7 @@ plot(EP_All_PWs,
      fills = c("cyan","white" ))
 ```
 
-![](README_figs/README--Euler%20plots%20of%20smoldering%20condition-5.png)<!-- -->
+![](README_figs/README-unnamed-chunk-35-1.png)<!-- -->
 
 ``` r
 FvM_PLs <- FvM[c(4,10)]
@@ -1275,7 +1093,7 @@ plot(EP_All_PLs,
      fills = c("white","cyan" ))
 ```
 
-![](README_figs/README--Euler%20plots%20of%20smoldering%20condition-6.png)<!-- -->
+![](README_figs/README-unnamed-chunk-36-1.png)<!-- -->
 
 Figure E8
 
@@ -1293,10 +1111,10 @@ download.file(url = gmturl, destfile = "DisGeNET.gmt")
 token = upload_GMT_file(gmtfile = "DisGeNET.gmt")
 ```
 
-    ## Your custom annotations ID is gp__zIbE_sEFV_TNI.
+    ## Your custom annotations ID is gp__veL6_Kd7I_Dv4.
     ## You can use this ID as an 'organism' name in all the related enrichment tests against this custom source.
 
-    ## Just use: gost(my_genes, organism = 'gp__zIbE_sEFV_TNI')
+    ## Just use: gost(my_genes, organism = 'gp__veL6_Kd7I_Dv4')
 
 ``` r
 #####################################################################
@@ -1315,21 +1133,23 @@ PWf_N = gost(PWf_N$name,
 ``` r
 DG$PWf_N <- PWf_N$result
 
-df <- as.data.frame(DG$PWf_N[, c("term_name", "intersection_size")] )
+df <- as.data.frame(DG$PWf_N[, c("term_name", "p_value")] )
 df <- df %>% mutate(term_name = str_sub(term_name, start = 10L)) %>%
   mutate(term_name = str_replace_all(term_name, "_", " "))
-df <- df[order(df$intersection_size, decreasing = TRUE), ]
-q1 <-ggplot(df, aes(x=intersection_size, y=term_name)) +
+df <- df[order(df$p_value, decreasing = TRUE), ]
+df$term_name <- factor(df$term_name, levels = df$term_name)
+q1 <-ggplot(df, aes(x=p_value, y=term_name)) +
   geom_col(fill = "#56a0d3") +
-  ggtitle("Non-smokers") + xlab("intersection size")+
+  ggtitle("Non-smokers") + xlab("p-value")+
   theme(axis.text.x = element_text(color = "black", size = 16), 
         axis.text.y = element_text(color = "black", size = 16),
         title = element_text(size = 18, face="bold"),
-        axis.title.y = element_blank())
+        # axis.title.x = element_blank(),
+        axis.title.y = element_blank())+ xlim(0.000, 0.06)
 q1 
 ```
 
-![](README_figs/README--Gene%20disease%20assocaition%20enrichment%20from%20DisGeNET%20database-1.png)<!-- -->
+![](README_figs/README-unnamed-chunk-37-1.png)<!-- -->
 
 ``` r
 #------------------------------------------------------------------#
@@ -1345,21 +1165,23 @@ PWf_S = gost(PWf_S$name,
 ``` r
 DG$PWf_S <- PWf_S$result
 
-df <- as.data.frame(DG$PWf_S[, c("term_name", "intersection_size")] )
+df <- as.data.frame(DG$PWf_S[, c("term_name", "p_value")] )
 df <- df %>% mutate(term_name = str_sub(term_name, start = 10L)) %>%
   mutate(term_name = str_replace_all(term_name, "_", " "))
-df <- df[order(df$intersection_size, decreasing = TRUE), ]
-q2 <-ggplot(df, aes(x=intersection_size, y=term_name)) +
+df <- df[order(df$p_value, decreasing = TRUE), ]
+df$term_name <- factor(df$term_name, levels = df$term_name)
+q2 <-ggplot(df, aes(x=p_value, y=term_name)) +
   geom_col(fill = "#56a0d3") +
-  ggtitle("Smokers")+  xlab("intersection size")+
+  ggtitle("Smokers")+  xlab("p-value")+
   theme(axis.text.x = element_text(color = "black", size = 16), 
         axis.text.y = element_text(color = "black", size = 16),
         title = element_text(size = 18, face="bold"),
-        axis.title.y = element_blank())
+        #axis.title.x = element_blank(),
+        axis.title.y = element_blank())+ xlim(0.000, 0.06)
 q2 
 ```
 
-![](README_figs/README--Gene%20disease%20assocaition%20enrichment%20from%20DisGeNET%20database-2.png)<!-- -->
+![](README_figs/README-unnamed-chunk-38-1.png)<!-- -->
 
 ``` r
 #------------------------------------------------------------------#
@@ -1376,21 +1198,23 @@ PWf_F = gost(PWf_F$name,
 ``` r
 DG$PWf_F <- PWf_F$result
 
-df <- as.data.frame(DG$PWf_F[, c("term_name", "intersection_size")] )
+df <- as.data.frame(DG$PWf_F[, c("term_name", "p_value")] )
 df <- df %>% mutate(term_name = str_sub(term_name, start = 10L)) %>%
   mutate(term_name = str_replace_all(term_name, "_", " "))
-df <- df[order(df$intersection_size, decreasing = TRUE), ]
-q3 <-ggplot(df, aes(x=intersection_size, y=term_name)) +
+df <- df[order(df$p_value, decreasing = TRUE), ]
+df$term_name <- factor(df$term_name, levels = df$term_name)
+q3 <-ggplot(df, aes(x=p_value, y=term_name)) +
   geom_col(fill = "#56a0d3") +
-  ggtitle("Female donors")+ xlab("intersection size")+
+  ggtitle("Female donors")+ xlab("p-value")+
   theme(axis.text.x = element_text(color = "black", size = 16), 
         axis.text.y = element_text(color = "black", size = 16),
         title = element_text(size = 18, face="bold"),
-        axis.title.y = element_blank())
+        # axis.title.x = element_blank(),
+        axis.title.y = element_blank())+ xlim(0.000, 0.06)
 q3 
 ```
 
-![](README_figs/README--Gene%20disease%20assocaition%20enrichment%20from%20DisGeNET%20database-3.png)<!-- -->
+![](README_figs/README-unnamed-chunk-39-1.png)<!-- -->
 
 ``` r
 #------------------------------------------------------------------#
@@ -1406,24 +1230,24 @@ PWf_M = gost(PWf_M$name,
 ``` r
 DG$PWf_M <- PWf_M$result
 
-df <- as.data.frame(DG$PWf_M[, c("term_name", "intersection_size")] )
-df <- df[order(df$intersection_size, decreasing = TRUE), ]
-df <- as.data.frame(DG$PWf_M[, c("term_name", "intersection_size")] )
+df <- as.data.frame(DG$PWf_M[, c("term_name", "p_value")] )
 df <- df %>% mutate(term_name = str_sub(term_name, start = 10L)) %>%
   mutate(term_name = str_replace_all(term_name, "_", " "))
-
-q4 <-ggplot(df, aes(x=intersection_size, y=term_name)) +
+df <- df[order(df$p_value, decreasing = TRUE), ]
+df$term_name <- factor(df$term_name, levels = df$term_name)
+q4<-ggplot(df, aes(x=p_value, y=term_name)) +
   geom_col(fill = "#56a0d3") +
-  ggtitle("Male donors") + xlab("intersection size")+
+  ggtitle("Male donors") + xlab("p-value")+
   theme(axis.text.x = element_text(color = "black", size = 16), 
         axis.text.y = element_text(color = "black", size = 16),
         title = element_text(size = 18, face="bold"),
-        axis.title.y = element_blank()) 
+        # axis.title.x = element_blank(),
+        axis.title.y = element_blank())+ xlim(0.000, 0.06)
 
-q4 
+q4
 ```
 
-![](README_figs/README--Gene%20disease%20assocaition%20enrichment%20from%20DisGeNET%20database-4.png)<!-- -->
+![](README_figs/README-unnamed-chunk-40-1.png)<!-- -->
 
 ``` r
 #---------------------------------------------------#
@@ -1455,5 +1279,5 @@ DG, names(DG)
     ## [1] 0
 
 ``` r
-saveWorkbook(blank_excel, file = "Table E6 gene-disease association.xlsx", overwrite = TRUE)
+saveWorkbook(blank_excel, file = "Table E7.xlsx", overwrite = TRUE)
 ```
