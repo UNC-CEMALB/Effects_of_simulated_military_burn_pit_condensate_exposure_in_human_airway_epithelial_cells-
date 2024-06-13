@@ -265,6 +265,9 @@ b5, names(b5)
 saveWorkbook(blank_excel, file = "Table E3.xlsx", overwrite = TRUE)
 ```
 
+    ## Warning in file.create(to[okay]): cannot create file 'Table E3.xlsx', reason
+    ## 'Permission denied'
+
 ``` r
 ###############################################################################
 ##  Smokers ######################################
@@ -1111,10 +1114,10 @@ download.file(url = gmturl, destfile = "DisGeNET.gmt")
 token = upload_GMT_file(gmtfile = "DisGeNET.gmt")
 ```
 
-    ## Your custom annotations ID is gp__gmlE_B2En_a7w.
+    ## Your custom annotations ID is gp__AjOX_qhoY_TMQ.
     ## You can use this ID as an 'organism' name in all the related enrichment tests against this custom source.
 
-    ## Just use: gost(my_genes, organism = 'gp__gmlE_B2En_a7w')
+    ## Just use: gost(my_genes, organism = 'gp__AjOX_qhoY_TMQ')
 
 ``` r
 #####################################################################
@@ -1252,7 +1255,10 @@ q4
 ``` r
 #---------------------------------------------------#
 
-
+names(DG) <- str_replace_all(names(DG), c(PWf_N= "Non-smokers",
+                                          PWf_S= "Smokers",
+                                          PWf_F= "Female",
+                                          PWf_M= "Male"))
 
 blank_excel <- createWorkbook()
 
@@ -1266,18 +1272,21 @@ DG, names(DG)
 )
 ```
 
-    ## $PWf_N
+    ## $`Non-smokers`
     ## [1] 0
     ## 
-    ## $PWf_S
+    ## $Smokers
     ## [1] 0
     ## 
-    ## $PWf_F
+    ## $Female
     ## [1] 0
     ## 
-    ## $PWf_M
+    ## $Male
     ## [1] 0
 
 ``` r
 saveWorkbook(blank_excel, file = "Table E7.xlsx", overwrite = TRUE)
 ```
+
+    ## Warning in file.create(to[okay]): cannot create file 'Table E7.xlsx', reason
+    ## 'Permission denied'

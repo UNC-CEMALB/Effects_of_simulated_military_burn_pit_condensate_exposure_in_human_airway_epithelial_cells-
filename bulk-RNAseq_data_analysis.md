@@ -1153,6 +1153,12 @@ SAVING TABLE with significant DEGs in each exposure group
 
 ``` r
 #---------------------------------------------------#
+names(b4) <- str_replace_all(names(b4), c(CBF= "Cardboard Flaming",
+                                          CBS= "Cardboard Smoldering",
+                                          PLF= "Plastic Flaming",
+                                          PLS= "Plastic Smoldering",
+                                          PWF= "Plywood Flaming",
+                                          PWS= "Plywood Smoldering"))
 
 blank_excel <- createWorkbook()
 
@@ -1167,3 +1173,6 @@ b4, names(b4)
 
 saveWorkbook(blank_excel, file = "Table E1.xlsx", overwrite = TRUE)
 ```
+
+    ## Warning in file.create(to[okay]): cannot create file 'Table E1.xlsx', reason
+    ## 'Permission denied'
