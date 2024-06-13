@@ -1111,10 +1111,10 @@ download.file(url = gmturl, destfile = "DisGeNET.gmt")
 token = upload_GMT_file(gmtfile = "DisGeNET.gmt")
 ```
 
-    ## Your custom annotations ID is gp__lVch_nz6w_mHk.
+    ## Your custom annotations ID is gp__CVOd_gGAj_CVU.
     ## You can use this ID as an 'organism' name in all the related enrichment tests against this custom source.
 
-    ## Just use: gost(my_genes, organism = 'gp__lVch_nz6w_mHk')
+    ## Just use: gost(my_genes, organism = 'gp__CVOd_gGAj_CVU')
 
 ``` r
 #####################################################################
