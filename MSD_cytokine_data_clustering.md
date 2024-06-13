@@ -15,6 +15,9 @@ suppressWarnings(suppressMessages(library(pheatmap)))
 suppressWarnings(suppressMessages(library(dplyr)))
 suppressWarnings(suppressMessages(library(tidyverse)))
 
+# Set theme
+theme_set(theme_bw())
+
 # The following setting is important, do not omit.
 options(stringsAsFactors = FALSE)
 
@@ -512,7 +515,7 @@ cluster = cluster %>%
 q <- ggplot(cluster,aes(x = exposure, y =score, fill = cluster))+ 
   geom_bar(stat = "identity", position = "dodge") +
   scale_fill_manual(values = c('steelblue1','forestgreen','darkkhaki')) +
-  coord_cartesian(ylim = c(0.8, 1.3))
+  coord_cartesian(ylim = c(-0.2, 0.4))
 q + theme(axis.text=element_text(size=12, colour="black"),
           axis.title=element_text(size=14,face="bold"),
           axis.text.x=element_text(angle=45, hjust=1))
