@@ -464,26 +464,29 @@ rownames(cluster1) <- cluster1[,1]
 cluster1 <- cluster1[,-1]
 cluster1$c1 <- rowMeans(cluster1)
 cluster1$exposure <- rownames(cluster1)
+cluster1$c1l <- log2(cluster1$c1)
 
 cluster2 <- cluster2 %>% select(where(~!all(is.na(.x))))
 rownames(cluster2) <- cluster2[,1]
 cluster2 <- cluster2[,-1]
 cluster2$c2 <- rowMeans(cluster2)
 cluster2$exposure <- rownames(cluster2)
+cluster2$c2l <- log2(cluster2$c2)
 
 cluster3 <- cluster3 %>% select(where(~!all(is.na(.x))))
 rownames(cluster3) <- cluster3[,1]
 cluster3 <- cluster3[,-1]
 cluster3$c3 <- rowMeans(cluster3)
 cluster3$exposure <- rownames(cluster3)
+cluster3$c3l <- log2(cluster3$c3)
 ```
 
 ``` r
 cluster <- data.frame(matrix(ncol = 3, nrow = length(exps)))
 cluster$exposure <- exps
-cluster <- merge(cluster, cluster1[,c("exposure", "c1")], by.x = "exposure", by.y = "exposure")
-cluster <- merge(cluster, cluster2[,c("exposure", "c2")], by.x = "exposure", by.y = "exposure")
-cluster <- merge(cluster, cluster3[,c("exposure", "c3")], by.x = "exposure", by.y = "exposure")
+cluster <- merge(cluster, cluster1[,c("exposure", "c1l")], by.x = "exposure", by.y = "exposure")
+cluster <- merge(cluster, cluster2[,c("exposure", "c2l")], by.x = "exposure", by.y = "exposure")
+cluster <- merge(cluster, cluster3[,c("exposure", "c3l")], by.x = "exposure", by.y = "exposure")
 cluster <- cluster %>% select(where(~!all(is.na(.x))))
 rownames(cluster) <- cluster[,1]
 cluster <- cluster[,-1]
@@ -496,9 +499,9 @@ rownames(cluster) <- str_replace_all(rownames(cluster), c(CB_F= "Cardboard Flami
                                                           PW_F= "Plywood Flaming",
                                                           PW_S= "Plywood Smoldering"))
 
-colnames(cluster) <- str_replace_all(colnames(cluster), c(c1= "cluster 1",
-                                                          c2= "cluster 2",
-                                                          c3= "cluster 3"))
+colnames(cluster) <- str_replace_all(colnames(cluster), c(c1l= "cluster 1",
+                                                          c2l= "cluster 2",
+                                                          c3l= "cluster 3"))
 
 cluster <- cluster[c(1,2,5,6,3,4),]
 
