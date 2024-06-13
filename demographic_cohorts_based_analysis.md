@@ -265,9 +265,6 @@ b5, names(b5)
 saveWorkbook(blank_excel, file = "Table E3.xlsx", overwrite = TRUE)
 ```
 
-    ## Warning in file.create(to[okay]): cannot create file 'Table E3.xlsx', reason
-    ## 'Permission denied'
-
 ``` r
 ###############################################################################
 ##  Smokers ######################################
@@ -1114,10 +1111,10 @@ download.file(url = gmturl, destfile = "DisGeNET.gmt")
 token = upload_GMT_file(gmtfile = "DisGeNET.gmt")
 ```
 
-    ## Your custom annotations ID is gp__AjOX_qhoY_TMQ.
+    ## Your custom annotations ID is gp__lVch_nz6w_mHk.
     ## You can use this ID as an 'organism' name in all the related enrichment tests against this custom source.
 
-    ## Just use: gost(my_genes, organism = 'gp__AjOX_qhoY_TMQ')
+    ## Just use: gost(my_genes, organism = 'gp__lVch_nz6w_mHk')
 
 ``` r
 #####################################################################
@@ -1287,6 +1284,3 @@ DG, names(DG)
 ``` r
 saveWorkbook(blank_excel, file = "Table E7.xlsx", overwrite = TRUE)
 ```
-
-    ## Warning in file.create(to[okay]): cannot create file 'Table E7.xlsx', reason
-    ## 'Permission denied'
