@@ -1173,6 +1173,3 @@ b4, names(b4)
 
 saveWorkbook(blank_excel, file = "Table E1.xlsx", overwrite = TRUE)
 ```
-
-    ## Warning in file.create(to[okay]): cannot create file 'Table E1.xlsx', reason
-    ## 'Permission denied'
