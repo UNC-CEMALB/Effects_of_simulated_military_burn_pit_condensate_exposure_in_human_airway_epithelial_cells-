@@ -6,27 +6,27 @@ Arun Ghosh
 ``` r
 # -loading packages and data
 
-suppressWarnings(suppressMessages(library(edgeR)))
-suppressWarnings(suppressMessages(library(AnnotationDbi)))
-suppressWarnings(suppressMessages(library(org.Hs.eg.db)))
-suppressWarnings(suppressMessages(library(dplyr)))
-suppressWarnings(suppressMessages(library(stringr)))
-suppressWarnings(suppressMessages(library(ggplot2)))
-suppressWarnings(suppressMessages(library(EnhancedVolcano)))
-suppressWarnings(suppressMessages(library(eulerr)))
-suppressWarnings(suppressMessages(library(purrr)))
-suppressWarnings(suppressMessages(library(ggVennDiagram)))
-suppressWarnings(suppressMessages(library(tidyverse)))
-suppressWarnings(suppressMessages(library(pheatmap)))
-suppressWarnings(suppressMessages(library(RColorBrewer))) 
+library(edgeR)
+library(AnnotationDbi)
+library(org.Hs.eg.db)
+library(dplyr)
+library(stringr)
+library(ggplot2)
+library(EnhancedVolcano)
+library(eulerr)
+library(purrr)
+library(ggVennDiagram)
+library(tidyverse)
+library(pheatmap)
+library(RColorBrewer) 
 organism = "org.Hs.eg.db"
-suppressWarnings(suppressMessages(library(organism, character.only = TRUE)))
-suppressWarnings(suppressMessages(library(clusterProfiler)))
-suppressWarnings(suppressMessages(library(readxl)))
-suppressWarnings(suppressMessages(library(psych)))
-suppressWarnings(suppressMessages(library(corrplot)))
-suppressWarnings(suppressMessages(library(enrichplot)))
-suppressWarnings(suppressMessages(library(openxlsx)))
+library(organism, character.only = TRUE)
+library(clusterProfiler)
+library(readxl)
+library(psych)
+library(corrplot)
+library(enrichplot)
+library(openxlsx)
 
 counts <- read.delim("counts_7G.txt", row.names = 1) # reading in RNAseq data
 
@@ -120,16 +120,7 @@ for(i in 1:length(x)){if(x[i] != "exposureCTR"){
   b4[[i]] <- top.table
   names(b4)[i] <- exposure}
   }
-```
 
-    ## 'select()' returned 1:many mapping between keys and columns
-    ## 'select()' returned 1:many mapping between keys and columns
-    ## 'select()' returned 1:many mapping between keys and columns
-    ## 'select()' returned 1:many mapping between keys and columns
-    ## 'select()' returned 1:many mapping between keys and columns
-    ## 'select()' returned 1:many mapping between keys and columns
-
-``` r
 # removing the empty control group from the lists
 a4[3] <- NULL 
 b4[3] <- NULL 
@@ -448,12 +439,7 @@ colnames(counts_Fg_c)
 counts_ALL <- counts_Fg_c %>%
   group_by(transcripts, SampleID) %>%
   summarise(across(everything(), sum))
-```
 
-    ## `summarise()` has grouped output by 'transcripts'. You can override using the
-    ## `.groups` argument.
-
-``` r
 counts_ALL <- counts_ALL %>% pivot_wider(names_from = "SampleID", values_from = "count") %>%
   column_to_rownames(var = "transcripts")
 
@@ -461,11 +447,6 @@ counts_ALL <- counts_ALL %>% relocate("Control", "Cardboard", "Plywood", "Plasti
 counts_ALL$gene <- mapIds(org.Hs.eg.db, keys = row.names(counts_ALL), 
                          keytype = "ENSEMBL", column = "SYMBOL", 
                          multiVals="first") #adding gene names 
-```
-
-    ## 'select()' returned 1:1 mapping between keys and columns
-
-``` r
 counts_ALL <- subset(counts_ALL, counts_ALL$gene != 'NA')
 rownames(counts_ALL) <- NULL
 rownames(counts_ALL) <- counts_ALL$gene
@@ -560,17 +541,7 @@ gseGO_CBf_ALL <- gseGO(geneList=genelist_GdataCBf,
                       verbose = TRUE, 
                       OrgDb = organism, 
                       pAdjustMethod = "BH") #Bbenjamini Hochberg adjustment
-```
 
-    ## preparing geneSet collections...
-
-    ## GSEA analysis...
-
-    ## leading edge analysis...
-
-    ## done...
-
-``` r
 #dotplot
 enrichplot::dotplot(gseGO_CBf_ALL, split=".sign", title = "Cardboard -Flaming",
                     showCategory = 5, font.size = 15, 
@@ -634,17 +605,7 @@ gseGO_PWf_ALL <- gseGO(geneList=genelist_GdataPWf,
                       verbose = TRUE, 
                       OrgDb = organism, 
                       pAdjustMethod = "BH") #Benjamini Hochberg adjustment
-```
 
-    ## preparing geneSet collections...
-
-    ## GSEA analysis...
-
-    ## leading edge analysis...
-
-    ## done...
-
-``` r
 #dotplot
 enrichplot::dotplot(gseGO_PWf_ALL, split=".sign", title = "Plywood -Flaming",
                     showCategory = 5, font.size = 15, 
@@ -708,17 +669,7 @@ gseGO_PLf_ALL <- gseGO(geneList=genelist_GdataPLf,
                       verbose = TRUE, 
                       OrgDb = organism, 
                       pAdjustMethod = "BH") #Benjamini Hochberg adjustment
-```
 
-    ## preparing geneSet collections...
-
-    ## GSEA analysis...
-
-    ## leading edge analysis...
-
-    ## done...
-
-``` r
 #dotplot
 enrichplot::dotplot(gseGO_PLf_ALL, split=".sign", title = "Plastic -Flaming",
                     showCategory = 5, font.size = 15, 
@@ -829,17 +780,7 @@ gseGO_CBs_ALL <- gseGO(geneList=genelist_GdataCBs,
                       verbose = TRUE, 
                       OrgDb = organism, 
                       pAdjustMethod = "BH") #Benjamini Hochberg adjustment
-```
 
-    ## preparing geneSet collections...
-
-    ## GSEA analysis...
-
-    ## leading edge analysis...
-
-    ## done...
-
-``` r
 #dotplot
 enrichplot::dotplot(gseGO_CBs_ALL, split=".sign", title = "Cardboard -Smoldering",
                     showCategory = 5, font.size = 15,  label_format = 50) + facet_grid(.~.sign)+ 
@@ -899,17 +840,8 @@ gseGO_PWs_ALL <- gseGO(geneList=genelist_GdataPWs,
                        verbose = TRUE, 
                        OrgDb = organism, 
                        pAdjustMethod = "BH") #Benjamini Hochberg adjustment
-```
 
-    ## preparing geneSet collections...
 
-    ## GSEA analysis...
-
-    ## leading edge analysis...
-
-    ## done...
-
-``` r
 #dotplot
 enrichplot::dotplot(gseGO_PWs_ALL, split=".sign", title = "Plywood -Smoldering",
                     showCategory = 5, font.size = 15,  label_format = 50) + facet_grid(.~.sign)+ 
@@ -969,17 +901,7 @@ gseGO_PLs_ALL <- gseGO(geneList=genelist_GdataPLs,
                        verbose = TRUE, 
                        OrgDb = organism, 
                        pAdjustMethod = "BH") #Benjamini Hochberg adjustment
-```
 
-    ## preparing geneSet collections...
-
-    ## GSEA analysis...
-
-    ## leading edge analysis...
-
-    ## done...
-
-``` r
 #dotplot
 enrichplot::dotplot(gseGO_PLs_ALL, split=".sign", title = "Plastic -Smoldering",
                     showCategory = 5, font.size = 15, label_format = 50) + facet_grid(.~.sign)+ 
@@ -1026,12 +948,6 @@ Figure 4
 ChCs <- read_excel("chemical_concentrations.xlsx", 
                    sheet=1, 
                    col_names = TRUE)
-```
-
-    ## New names:
-    ## • `` -> `...1`
-
-``` r
 ChCs <- as.data.frame(ChCs)
 ChCs <- as.matrix(ChCs)
 head(ChCs)
@@ -1052,12 +968,6 @@ mode(ChCs) <- "numeric" # Changing matrix to numeric
 IEs <- read_excel("chemical_concentrations.xlsx", 
                    sheet=2, 
                    col_names = TRUE)
-```
-
-    ## New names:
-    ## • `` -> `...1`
-
-``` r
 IEs <- as.data.frame(IEs)
 IEs <- as.matrix(IEs)
 head(IEs)
@@ -1099,23 +1009,13 @@ colnames(counts_ALL)
 counts_ALL <- counts_ALL %>%
   group_by(transcripts, SampleID) %>%
   summarise(across(everything(), sum))
-```
 
-    ## `summarise()` has grouped output by 'transcripts'. You can override using the
-    ## `.groups` argument.
-
-``` r
 counts_ALL <- counts_ALL %>% pivot_wider(names_from = "SampleID", values_from = "count") %>%
   column_to_rownames(var = "transcripts")
 
 counts_ALL$gene <- mapIds(org.Hs.eg.db, keys = row.names(counts_ALL), 
                             keytype = "ENSEMBL", column = "SYMBOL", 
                             multiVals="first") #adding gene names 
-```
-
-    ## 'select()' returned 1:1 mapping between keys and columns
-
-``` r
 counts_ALL <- subset(counts_ALL, counts_ALL$gene != 'NA')
 rownames(counts_ALL) <- NULL
 rownames(counts_ALL) <- counts_ALL$gene
@@ -1171,5 +1071,5 @@ Map(function(df, tab_name){
 b4, names(b4)
 )
 
-saveWorkbook(blank_excel, file = "Table E1.xlsx", overwrite = TRUE)
+saveWorkbook(blank_excel, file = "Table S1.xlsx", overwrite = TRUE)
 ```
