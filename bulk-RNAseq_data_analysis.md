@@ -1,7 +1,7 @@
 bulk-RNAseq
 ================
 Arun Ghosh
-2024-05-20
+2024-09-04
 
 ``` r
 # -loading packages and data
@@ -29,8 +29,6 @@ library(enrichplot)
 library(openxlsx)
 
 counts <- read.delim("counts_7G.txt", row.names = 1) # reading in RNAseq data
-
-# output_format = 'all'
 ```
 
 ``` r
@@ -113,7 +111,6 @@ for(i in 1:length(x)){if(x[i] != "exposureCTR"){
   d4[[i]] = row.names(top.table)
   names(d4)[i] <- exposure
   rownames(top.table) <- NULL
-  #rownames(top.table) <- top.table$symbol
   top.table <- top.table [(c(7,1,2,3,4,5,6,8))]
   a4[[i]] = top.table$symbol
   names(a4)[i] <- exposure
@@ -498,7 +495,7 @@ enGOOL <- enrichGO(gene         = geneOL,
 head(enGOOL)
 
 #barplot
-barplot(enGOOL, showCategory=10, font = 18, title = "47 -common genes")+ 
+barplot(enGOOL, showCategory=8, font = 18, title = "47 -common genes")+ 
   scale_x_continuous(breaks = seq(0, 10, by = 2), limits=c(0,10))+
   theme(axis.text.y = element_text(lineheight = 0.7, size = 15),
         title = element_text(size = 15, face="bold"))
@@ -1059,7 +1056,7 @@ names(b4) <- str_replace_all(names(b4), c(CBF= "Cardboard Flaming",
                                           PLS= "Plastic Smoldering",
                                           PWF= "Plywood Flaming",
                                           PWS= "Plywood Smoldering"))
-
+b4 <- b4 %>% lapply(arrange, direction)
 blank_excel <- createWorkbook()
 
 Map(function(df, tab_name){     
