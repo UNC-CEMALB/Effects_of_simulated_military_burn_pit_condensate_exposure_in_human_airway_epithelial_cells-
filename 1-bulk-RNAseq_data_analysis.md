@@ -498,7 +498,7 @@ enGOOL <- enrichGO(gene         = geneOL,
 head(enGOOL)
 
 #barplot
-barplot(enGOOL, showCategory=8, font = 18, title = "47 -common genes")+ 
+barplot(enGOOL, showCategory=10, font = 18, title = "47 -common genes")+ 
   scale_x_continuous(breaks = seq(0, 10, by = 2), limits=c(0,10))+
   theme(axis.text.y = element_text(lineheight = 0.7, size = 15),
         title = element_text(size = 15, face="bold"))
