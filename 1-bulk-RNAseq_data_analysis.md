@@ -771,15 +771,15 @@ genelist_GdataCBs = sort(genelist_GdataCBs, decreasing = TRUE) #must sort in des
 #Performing GSEA analysis
 #Gene Ontology (GO) 
 gseGO_CBs_ALL <- gseGO(geneList=genelist_GdataCBs, 
-                      ont ="ALL", 
-                      keyType = "ENSEMBL", 
-                      minGSSize = 10, #min size of gene sets for analysis
-                      maxGSSize = 500, #max size of gene sets for analysis
-                      pvalueCutoff = 0.05, 
-                      eps = 0,
-                      verbose = TRUE, 
-                      OrgDb = organism, 
-                      pAdjustMethod = "BH") #Benjamini Hochberg adjustment
+                       ont ="ALL", 
+                       keyType = "ENSEMBL", 
+                       minGSSize = 10, #min size of gene sets for analysis
+                       maxGSSize = 500, #max size of gene sets for analysis
+                       pvalueCutoff = 0.05, 
+                       eps = 0,
+                       verbose = TRUE, 
+                       OrgDb = organism, 
+                       pAdjustMethod = "BH") #Benjamini Hochberg adjustment
 
 #dotplot
 enrichplot::dotplot(gseGO_CBs_ALL, split=".sign", title = "Cardboard -Smoldering",
@@ -788,7 +788,7 @@ enrichplot::dotplot(gseGO_CBs_ALL, split=".sign", title = "Cardboard -Smoldering
   theme(axis.text.y = element_text(lineheight = 0.80, size = 15),
         title = element_text(size = 15, face="bold"),
         plot.title = element_text(hjust=0.5))+
-  coord_fixed(ratio = 1, xlim = NULL, ylim = NULL, expand = TRUE, clip = "on") 
+  scale_y_discrete(label=function(y) stringr::str_trunc(y, 40))  
 ```
 
 ![](README_figs/README1-unnamed-chunk-19-1.png)<!-- -->
@@ -797,15 +797,15 @@ enrichplot::dotplot(gseGO_CBs_ALL, split=".sign", title = "Cardboard -Smoldering
 #GO over-representation analysis
 geneCBs <- names(genelist_GdataCBs[genelist_GdataCBs[] > 0.5]) # logFC > 0.5
 enGOCBs <- enrichGO(gene         = geneCBs,
-                   OrgDb         = org.Hs.eg.db,
-                   keyType       = 'ENSEMBL',
-                   ont           = "ALL",
-                   pAdjustMethod = "BH",
-                   pvalueCutoff  = 0.05,
-                   qvalueCutoff  = 0.1)
+                    OrgDb         = org.Hs.eg.db,
+                    keyType       = 'ENSEMBL',
+                    ont           = "ALL",
+                    pAdjustMethod = "BH",
+                    pvalueCutoff  = 0.05,
+                    qvalueCutoff  = 0.1)
 head(enGOCBs)
 
-#barplot
+
 barplot(enGOCBs, showCategory=10, size = 15, title = "Cardboard -Smoldering")+ 
   scale_x_continuous(breaks = seq(0, 10, by = 5), limits=c(0,10))+
   theme(axis.text.y = element_text(lineheight = 0.7, size = 15),
@@ -849,7 +849,7 @@ enrichplot::dotplot(gseGO_PWs_ALL, split=".sign", title = "Plywood -Smoldering",
   theme(axis.text.y = element_text(lineheight = 0.80, size = 15),
         title = element_text(size = 15, face="bold"),
         plot.title = element_text(hjust=0.5))+
-  coord_fixed(ratio = 1, xlim = NULL, ylim = NULL, expand = TRUE, clip = "on")
+  scale_y_discrete(label=function(y) stringr::str_trunc(y, 40)) 
 ```
 
 ![](README_figs/README1-unnamed-chunk-21-1.png)<!-- -->
@@ -909,7 +909,7 @@ enrichplot::dotplot(gseGO_PLs_ALL, split=".sign", title = "Plastic -Smoldering",
   theme(axis.text.y = element_text(lineheight = 0.80, size = 15),
         title = element_text(size = 15, face="bold"),
         plot.title = element_text(hjust=0.5))+
-  coord_fixed(ratio = 1, xlim = NULL, ylim = NULL, expand = TRUE, clip = "on") 
+  scale_y_discrete(label=function(y) stringr::str_trunc(y, 40))  
 ```
 
 ![](README_figs/README1-unnamed-chunk-23-1.png)<!-- -->
@@ -928,9 +928,9 @@ head(enGOPLs)
 
 #barplot
 barplot(enGOPLs, showCategory=10, font = 15, title = "Plastic -Smoldering")+
-scale_x_continuous(breaks = seq(0, 10, by = 5), limits=c(0,10))+
+  scale_x_continuous(breaks = seq(0, 10, by = 5), limits=c(0,10))+
   theme(axis.text.y = element_text(lineheight = 0.7, size = 15),
-        title = element_text(size = 15, face="bold"))+ coord_fixed(2)
+        title = element_text(size = 15, face="bold"))+ coord_fixed(2) 
 ```
 
 ![](README_figs/README1-unnamed-chunk-24-1.png)<!-- -->
