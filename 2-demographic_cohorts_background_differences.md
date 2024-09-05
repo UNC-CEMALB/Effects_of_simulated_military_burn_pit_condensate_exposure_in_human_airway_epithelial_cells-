@@ -264,24 +264,23 @@ x2 = list( Groups = c(Female="yellow", Male="purple"))
 
 temp4 <- as.matrix(counts_CTRL_FvM)
 pheatmap(temp4, 
-           color = colorRampPalette(rev(brewer.pal(n = 7, name ="RdYlBu")))(100), 
-           display_numbers = FALSE,
-           number_color = "black",
-           fontsize_number = 5,
-           angle_col = c("45"), 
-           cellwidth = 10, 
-           cellheight = 7, 
-           border_color = "black",
-           annotation_col = x,
-           annotation_colors = x2,
-           show_colnames = F, 
-           treeheight_col = 1, 
-           fontsize_row = 7, 
-           scale = 'row', 
-           fontsize_col = 7, 
-           cutree_rows =  2, 
-           cluster_cols = TRUE, 
-           cluster_rows = TRUE)
+         color = colorRampPalette(rev(brewer.pal(n = 7, name ="RdYlBu")))(100), 
+         display_numbers = FALSE,
+         number_color = "black",
+         fontsize_number = 5,
+         angle_col = c("45"), 
+         cellwidth = 9, 
+         cellheight = 6, 
+         border_color = "black",
+         annotation_col = x,
+         annotation_colors = x2,
+         show_colnames = F, 
+         treeheight_col = 1, 
+         fontsize_row = 6, 
+         scale = 'row', 
+         cutree_rows =  2, 
+         cluster_cols = TRUE, 
+         cluster_rows = TRUE)
 ```
 
 ![](README_figs/README2-unnamed-chunk-9-1.png)<!-- -->
