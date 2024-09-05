@@ -315,13 +315,7 @@ gseGO_FvM_ALL <- gseGO(geneList=genelist_GdataFvM,
                        OrgDb = organism, 
                        pAdjustMethod = "BH")
 
-enrichplot::dotplot(gseGO_FvM_ALL, split=".sign", title = "Female vs Male",
-                    showCategory = 10, font.size = 15, label_format = 70) + facet_grid(.~.sign)
-```
 
-![](README_figs/README2--GSEA%20analysis-1.png)<!-- -->
-
-``` r
 enrichplot::dotplot(gseGO_FvM_ALL, split=".sign", title = "Female vs Male",
                     showCategory = 10, font.size = 15, label_format = 70)+ facet_grid(.~.sign)+ 
   scale_x_continuous(breaks = seq(0, 1, by = 1), limits=c(0,1))+
@@ -330,7 +324,7 @@ enrichplot::dotplot(gseGO_FvM_ALL, split=".sign", title = "Female vs Male",
         plot.title = element_text(hjust=0.5))
 ```
 
-![](README_figs/README2--GSEA%20analysis-2.png)<!-- -->
+![](README_figs/README2--GSEA%20analysis-1.png)<!-- -->
 
 FIGURE S6
 
