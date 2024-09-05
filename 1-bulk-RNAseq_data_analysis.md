@@ -29,6 +29,9 @@ library(enrichplot)
 library(openxlsx)
 
 counts <- read.delim("counts_7G.txt", row.names = 1) # reading in RNAseq data
+
+# Raw data of the study is available at UNC CEMALB dataverse website
+# https://dataverse.unc.edu/dataverse/cemalb
 ```
 
 ``` r
